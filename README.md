@@ -1,3 +1,3 @@
 # genmacaddr
 
-Generate random mac address.
+Generate random mac address (EUI-48).
