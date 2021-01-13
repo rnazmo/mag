@@ -37,10 +37,10 @@
   (特に OUI の選択部分で力を入れる)
 
 サブコマンドのアイデアのメモ
-  genmacaddr
+  mag
     gen     Generate a new random mac address.
     lookup  Lookup the mac address in oui list.
-      "genmacaddr lookup <mac addr>" returns
+      "mag lookup <mac addr>" returns
     update  Update oui list. <- いる？
     convert Convert the mac address to EUI48 -> ... <- いる？
     (format)
