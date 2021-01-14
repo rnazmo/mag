@@ -7,12 +7,16 @@ type lettercase int
 type prefix []byte
 
 const (
-	none   format = iota // xxxxxxxxxxxx
+	_      format = iota // ignore first value by assigning to blank identifier
+	none                 // xxxxxxxxxxxx
 	colon                // xx:xx:xx:xx:xx:xx
 	hyphen               // xx-xx-xx-xx-xx-xx
 	// TODO: Add support for dot: xxx.xxx.xxx.xxx
+)
 
-	upper lettercase = iota
+const (
+	_ lettercase = iota
+	upper
 	lower
 )
 
