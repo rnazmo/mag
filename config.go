@@ -30,11 +30,38 @@ func (l lettercase) String() string {
 func (f format) String() string {
 	switch f {
 	case none:
-		return "None (001122AABBCC)"
+		return "None"
 	case colon:
-		return "Colon (00:11:22:AA:BB:CC)"
+		return "Colon"
 	case hyphen:
-		return "Hyphen (00-11-22-AA-BB-CC)"
+		return "Hyphen"
+	default:
+		return "" // TODO: Return error instead of ""(empty string)?
+	}
+}
+
+// TODO: Add support for format?
+//         lower.Sample(colon) returns "00:11:22:aa:bb:cc"
+//         lower.Sample(hyphen) returns "00-11-22-aa-bb-cc"
+func (l lettercase) Sample() string {
+	switch l {
+	case upper:
+		return "00:11:22:AA:BB:CC"
+	case lower:
+		return "00:11:22:aa:bb:cc"
+	default:
+		return "" // TODO: Return error instead of ""(empty string)?
+	}
+}
+
+func (f format) Sample() string {
+	switch f {
+	case none:
+		return "001122AABBCC"
+	case colon:
+		return "00:11:22:AA:BB:CC"
+	case hyphen:
+		return "00-11-22-AA-BB-CC"
 	default:
 		return "" // TODO: Return error instead of ""(empty string)?
 	}
