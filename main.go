@@ -98,7 +98,7 @@ func main() {
 
 	// TODO: Receive config from interactive-stdin or cli option.
 	c := newConfig()
-	for i := 0; i < c.qty; i++ {
+	for i := 0; i < c.q; i++ {
 		fmt.Println(string(genRandMacAddr(c.f, c.p)))
 	}
 

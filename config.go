@@ -16,8 +16,8 @@ const (
 )
 
 type config struct {
-	qty int        // quantity
-	l   lettercase // lower/upper
+	q int        // quantity
+	l lettercase // lower/upper
 
 	f format // none/colon/hyphen(/dot)
 
@@ -31,10 +31,10 @@ type config struct {
 
 func newConfig() config {
 	return config{
-		qty: 3, // TODO: 3 -> 5
-		l:   upper,
-		f:   colon,
-		p:   nil,
+		q: 3, // TODO: 3 -> 5
+		l: upper,
+		f: colon,
+		p: nil,
 		// ul:
 	}
 }
