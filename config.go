@@ -1,6 +1,7 @@
 package main
 
 // type octet string
+type oui string
 type format int
 type lettercase int
 type prefix []byte
