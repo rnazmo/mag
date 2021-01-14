@@ -16,6 +16,30 @@ const (
 	lower
 )
 
+func (l lettercase) String() string {
+	switch l {
+	case upper:
+		return "UPPERCASE"
+	case lower:
+		return "lowercase"
+	default:
+		return "" // TODO: Return error instead of ""(empty string)?
+	}
+}
+
+func (f format) String() string {
+	switch f {
+	case none:
+		return "None (001122AABBCC)"
+	case colon:
+		return "Colon (00:11:22:AA:BB:CC)"
+	case hyphen:
+		return "Hyphen (00-11-22-AA-BB-CC)"
+	default:
+		return "" // TODO: Return error instead of ""(empty string)?
+	}
+}
+
 type config struct {
 	q int        // quantity
 	l lettercase // lower/upper
