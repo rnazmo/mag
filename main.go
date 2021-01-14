@@ -94,10 +94,20 @@ func genRandMacAddr(f format, p prefix) []byte {
 }
 
 func main() {
-	// TODO: Get OUI-List struct.
+	// TODO: Parse CLI-Option
+	//       & Add support for non-interactive mode?
 
-	// TODO: Receive config from interactive-stdin or cli option.
+	// TODO: Get OUI-List struct.
+	//
+
 	c := newConfig()
+	fmt.Println(c)
+
+	if err := c.receiveConfigsInteractively(); err != nil {
+		log.Fatal("Failed to receive config interactively", err)
+	}
+	fmt.Println(c)
+
 	for i := 0; i < c.q; i++ {
 		fmt.Println(string(genRandMacAddr(c.f, c.p)))
 	}
