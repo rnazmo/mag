@@ -1,22 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"log"
-	"math/rand"
-	"time"
 )
 
 const hex = "0123456789ABCDEF"
-
-func init() { rand.Seed(time.Now().UnixNano()) }
-
-// random returns random int in [0,n).
-func random(n int) int { return rand.Intn(n) }
-
-func toLower(s []byte) []byte { return bytes.ToLower(s) }
-func toUpper(s []byte) []byte { return bytes.ToUpper(s) }
 
 // func genPlane() []byte {
 // 	a := make([]byte, 12)
