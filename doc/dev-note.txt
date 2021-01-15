@@ -1,21 +1,28 @@
 ## 機能等
-[ ] 生成する個数を指定できる (default: 5)
-[ ] フォーマットを指定できる (none/colon/hyphen, default: colon)
+### Done
+[x] 生成する個数を指定できる (default: 5)
+[x] フォーマットを指定できる (none/colon/hyphen, default: colon)
     none: 001122AABBCC
     colon: 00:11:22:AA:BB:CC
     hyphen: 00-11-22-AA-BB-CC
     dot: 001.122.AAB.BCC
-[ ] 生成するアドレスの範囲を指定できる (default: 00:00:00:00:00:00 ~ ff:ff:ff:ff:ff:ff)
-[ ] 生成する文字列の大文字小文字を指定できる (uppercase/lowercase, default: uppercase)
-[ ] 特定のOUI(組織固有識別子）を指定できる
+[x] 生成する文字列の大文字小文字を指定できる (uppercase/lowercase, default: uppercase)
+[x] 特定のOUI(組織固有識別子）を指定できる
+### High Priority
+[ ] OUI はリスト(Address, CompanyName)から選択することもできるようにしたい
+[ ] 上記の OUI リストでインクリメンタルサーチしたい
+[ ] 上記の OUI リストでソート可能にする？
 [ ] OUI のリストを更新するスクリプト的なものも作っておきたい.
     - OUI リストは ./assets/oui-list.csv にでも保持しておく.
+[ ] Add support for cli option
 [ ] 生成履歴を保存しておく(./assets/history とか？)
     -> 重複を避ける機能も付ける？
-[ ] Add support for cli option
+### Low Priority
+[ ] 生成するアドレスの範囲を指定できる (default: 00:00:00:00:00:00 ~ ff:ff:ff:ff:ff:ff)
 [ ] Add support for U/L bit
 [ ] Add support for I/G bit
 
+---
 
 ### Low Priority：後回し or 実装しない
 
