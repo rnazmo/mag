@@ -8,25 +8,6 @@ import (
 
 const hex = "0123456789ABCDEF"
 
-// func genPlane() []byte {
-// 	a := make([]byte, 12)
-// 	for i := range a {
-// 		a[i] = hex[random(len(hex))]
-// 	}
-// 	return a
-// }
-// func genHyCo(delimiter byte) []byte {
-// 	a := make([]byte, 12+5)
-// 	for i := range a {
-// 		if i%3 == 2 {
-// 			a[i] = delimiter
-// 		} else {
-// 			a[i] = hex[random(len(hex))]
-// 		}
-// 	}
-// 	return a
-// }
-
 func genPlane(p prefix) []byte {
 	if p == nil || len(p) == 0 {
 		p = make([]byte, 6, 12)
