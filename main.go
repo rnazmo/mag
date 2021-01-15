@@ -1,22 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"log"
-	"math/rand"
-	"time"
 )
 
 const hex = "0123456789ABCDEF"
-
-func init() { rand.Seed(time.Now().UnixNano()) }
-
-// random returns random int in [0,n).
-func random(n int) int { return rand.Intn(n) }
-
-func toLower(s []byte) []byte { return bytes.ToLower(s) }
-func toUpper(s []byte) []byte { return bytes.ToUpper(s) }
 
 // func genPlane() []byte {
 // 	a := make([]byte, 12)
@@ -52,7 +41,7 @@ func genPlane(p prefix) []byte {
 }
 
 func genHyCo(delimiter byte, p prefix) []byte {
-	if p == nil {
+	if p == nil || len(p) == 0 {
 		// p = make([]byte, 6+2, 12+5) // hituyou?
 		p = []byte{
 			hex[random(len(hex))], hex[random(len(hex))],
@@ -94,11 +83,21 @@ func genRandMacAddr(f format, p prefix) []byte {
 }
 
 func main() {
-	// TODO: Get OUI-List struct.
+	// TODO: Parse CLI-Option
+	//       & Add support for non-interactive mode?
 
-	// TODO: Receive config from interactive-stdin or cli option.
+	// TODO: Get OUI-List struct.
+	//
+
 	c := newConfig()
-	for i := 0; i < c.qty; i++ {
+	fmt.Println(c)
+
+	if err := c.receiveConfigsInteractively(); err != nil {
+		log.Fatal("Failed to receive config interactively", err)
+	}
+	fmt.Println(c)
+
+	for i := 0; i < c.q; i++ {
 		fmt.Println(string(genRandMacAddr(c.f, c.p)))
 	}
 
