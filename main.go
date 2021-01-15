@@ -52,7 +52,7 @@ func genPlane(p prefix) []byte {
 }
 
 func genHyCo(delimiter byte, p prefix) []byte {
-	if p == nil {
+	if p == nil || len(p) == 0 {
 		// p = make([]byte, 6+2, 12+5) // hituyou?
 		p = []byte{
 			hex[random(len(hex))], hex[random(len(hex))],

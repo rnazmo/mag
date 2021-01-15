@@ -22,9 +22,79 @@ func isOnlyInteger(s string) bool {
 	return true
 }
 
+// NOTE: Alphabet letter case does not matter.
+func runeIsIntegerOrAlphabet(r rune) bool {
+	return unicode.IsDigit(r) || ('A' <= r && r <= 'Z') || ('a' <= r && r <= 'z')
+}
+
+// NOTE: Alphabet letter case does not matter.
+func isOnlyIntegerOrAlphabet(s string) bool {
+	if len(s) == 0 { // SpecialCase
+		return true
+	}
+	for _, r := range s {
+		if !runeIsIntegerOrAlphabet(r) {
+			return false
+		}
+	}
+	return true
+}
+
+// isValidOUI returns whether it is valid as an OUI format.
+// Note that it's not whether that the OUI actually exists.
+func isValidOUI(s string) bool {
+	switch len(s) {
+	case 0:
+		return false // Dare to make this case (s is "") obvious.
+	case 6:
+		return isOnlyIntegerOrAlphabet(s) // like "012ABC"
+	case 8:
+		// first, must be like "01?2A?BC"
+		if !(isOnlyIntegerOrAlphabet(s[0:2]) && isOnlyIntegerOrAlphabet(s[3:5]) && isOnlyIntegerOrAlphabet(s[6:8])) {
+			return false
+		}
+		switch {
+		case s[2] == ':' && s[5] == ':':
+			return true // like "01:2A:BC"
+		case s[2] == '-' && s[5] == '-':
+			return true // like "01-2A-BC"
+		}
+	}
+	return false
+}
+
+// NOTE (About How to implement Yes/No prompt using promptui):
+//   The method using "IsConfirm: true" is not suitable in this case.
+//   Because any case where the input is not "y", non-nil error will be returned.
+//   ref: https://github.com/manifoldco/promptui/issues/81
 func receiveOUIInteractively() (oui, error) {
-	// TODO:
-	return "", nil
+	prompt := promptui.Select{
+		Label: "Do you want to specify OUI? [Yes/No]",
+		Items: []string{"Yes", "No"},
+	}
+	_, result, err := prompt.Run()
+	if err != nil {
+		return "", errors.Wrap(err, "prompt failed: ")
+	}
+	if result == "No" {
+		return "", nil
+	}
+
+	promptSecond := promptui.Prompt{
+		Label: "Enter the OUI to specify",
+		Validate: func(input string) error {
+			if isValidOUI(input) {
+				return nil
+			}
+			return errors.New("invalid input. it's must be valid OUI format")
+		},
+	}
+
+	result, err = promptSecond.Run()
+	if err != nil {
+		return "", errors.Wrap(err, "prompt failed: ")
+	}
+	return oui(result), nil
 }
 
 func receiveFormatInteractively() (format, error) {
@@ -123,8 +193,8 @@ func (c *config) receiveConfigsInteractively() error {
 	if err != nil {
 		return err
 	}
-	_ = o
-	// c.p = o // TODO:
+	p := []byte(o) // TODO: Improve
+	c.p = p
 
 	f, err := receiveFormatInteractively()
 	if err != nil {
