@@ -90,19 +90,14 @@ func main() {
 	//
 
 	c := newConfig()
-	fmt.Println(c)
+	// fmt.Println(c) // for debug
 
 	if err := c.receiveConfigsInteractively(); err != nil {
 		log.Fatal("Failed to receive config interactively", err)
 	}
-	fmt.Println(c)
+	// fmt.Println(c) // for debug
 
 	for i := 0; i < c.q; i++ {
 		fmt.Println(string(genRandMacAddr(c.f, c.p)))
 	}
-
-	c.p = []byte("0A:0A:0A")
-	fmt.Println(string(genRandMacAddr(c.f, c.p)))
-	c.f = none
-	fmt.Println(string(genRandMacAddr(c.f, c.p)))
 }
