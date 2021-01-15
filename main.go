@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 )
@@ -63,23 +64,29 @@ func genHyCo(delimiter byte, p prefix) []byte {
 
 // func genDot(delimiter byte) []byte {} // TODO:
 
-func genRandMacAddr(f format, p prefix) []byte {
+func genRandMacAddr(c config) []byte {
 	// 前提: prefix は validate 済み
 	// TODO: format the prefix
-	switch f {
+	var result []byte
+
+	switch c.f {
 	case none:
 		// TODO: format prefix to "none"
-		return genPlane(p)
+		result = genPlane(c.p)
 	case colon:
 		// TODO: format prefix to "colon"
-		return genHyCo(':', p)
+		result = genHyCo(':', c.p)
 	case hyphen:
 		// TODO: format prefix to "hyphen"
-		return genHyCo('-', p)
+		result = genHyCo('-', c.p)
+	default:
+		log.Fatal("ERROR")
 	}
 
-	log.Fatal("ERROR")
-	return nil
+	if c.l == lower {
+		result = bytes.ToLower(result)
+	}
+	return result
 }
 
 func main() {
@@ -98,6 +105,6 @@ func main() {
 	// fmt.Println(c) // for debug
 
 	for i := 0; i < c.q; i++ {
-		fmt.Println(string(genRandMacAddr(c.f, c.p)))
+		fmt.Println(string(genRandMacAddr(c)))
 	}
 }
