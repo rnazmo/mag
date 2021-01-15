@@ -28,7 +28,7 @@ const hex = "0123456789ABCDEF"
 // }
 
 func genPlane(p prefix) []byte {
-	if p == nil {
+	if p == nil || len(p) == 0 {
 		p = make([]byte, 6, 12)
 		for i := range p {
 			p[i] = hex[random(len(hex))]
