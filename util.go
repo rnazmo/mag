@@ -2,9 +2,13 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 	"unicode"
+
+	"github.com/pkg/errors"
 )
 
 func init() { rand.Seed(time.Now().UnixNano()) }
@@ -66,4 +70,69 @@ func isValidOUI(s string) bool {
 		}
 	}
 	return false
+}
+
+func identifyFormatFromOUI(o oui) (format, error) {
+	if !isValidOUI(string(o)) {
+		return 0, errors.New("wrong format")
+	}
+	switch {
+	case len(o) == 6:
+		return none, nil
+	case len(o) == 8 && o[2] == ':':
+		return colon, nil
+	case len(o) == 8 && o[2] == '-':
+		return hyphen, nil
+	default:
+		return 0, errors.New("something wrong")
+	}
+}
+
+// TODO: Better implementation
+func formatOUI(o oui, fWant format) (oui, error) {
+	if o == "" { // Special case
+		return "", nil
+	}
+	fNow, err := identifyFormatFromOUI(o)
+	if err != nil {
+		return "", err
+	}
+	if fNow == fWant {
+		return o, nil
+	}
+	fmt.Println(fWant, fNow)
+	switch fWant {
+	case none:
+		switch fNow {
+		case colon, hyphen:
+			// e.g. "01:2A:BC" -> "012ABC"
+			return o[0:2] + o[3:5] + o[6:8], nil
+		default:
+			return "", errors.New("something wrong")
+		}
+	case colon:
+		switch fNow {
+		case none:
+			// e.g. "012ABC" -> "01:2A:BC"
+			return o[0:2] + ":" + o[2:4] + ":" + o[4:6], nil
+		case hyphen:
+			// e.g. "01-2A-BC" -> "01:2A:BC"
+			return oui(strings.ReplaceAll(string(o), "-", ":")), nil
+		default:
+			return "", errors.New("something wrong")
+		}
+	case hyphen:
+		switch fNow {
+		case none:
+			// e.g. "012ABC" -> "01-2A-BC"
+			return o[0:2] + "-" + o[2:4] + "-" + o[4:6], nil
+		case colon:
+			// e.g. "01-2A-BC" -> "01:2A:BC"
+			return oui(strings.ReplaceAll(string(o), ":", "-")), nil
+		default:
+			return "", errors.New("something wrong")
+		}
+	default:
+		return "", errors.New("something wrong")
+	}
 }

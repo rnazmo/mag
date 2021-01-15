@@ -139,26 +139,31 @@ func (c *config) receiveConfigsInteractively() error {
 	if err != nil {
 		return err
 	}
-	p := []byte(o) // TODO: Improve
-	c.p = p
-
 	f, err := receiveFormatInteractively()
 	if err != nil {
 		return err
 	}
-	c.f = f
-
 	l, err := receiveLettercaseInteractively()
 	if err != nil {
 		return err
 	}
-	c.l = l // Update config data
-
 	q, err := receiveQuantityInteractively()
 	if err != nil {
 		return err
 	}
-	c.q = q
 
+	// Adapt the OUI format to f.
+	o, err = formatOUI(o, f)
+	if err != nil {
+		return err
+	}
+
+	p := []byte(o) // TODO: Improve
+
+	// Update config data
+	c.p = p
+	c.f = f
+	c.l = l
+	c.q = q
 	return nil
 }
