@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strconv"
+	"strings"
 
+	"github.com/gocarina/gocsv"
 	"github.com/pkg/errors"
 
 	"github.com/manifoldco/promptui"
@@ -15,32 +18,81 @@ import (
 //   ref: https://github.com/manifoldco/promptui/issues/81
 func receiveOUIInteractively() (oui, error) {
 	prompt := promptui.Select{
-		Label: "Do you want to specify OUI? [Yes/No]",
-		Items: []string{"Yes", "No"},
+		Label: "Do you want to specify OUI?",
+		Items: []string{
+			"Yes, I have a specific address to specify",
+			"Yes, I choose the address by organization name",
+			"No",
+		},
 	}
 	_, result, err := prompt.Run()
 	if err != nil {
 		return "", errors.Wrap(err, "prompt failed: ")
 	}
-	if result == "No" {
+
+	switch result {
+	case "Yes, I have a specific address to specify":
+		// TODO: Split these to another function?
+		promptSecond := promptui.Prompt{
+			Label: "Enter the OUI to specify",
+			Validate: func(input string) error {
+				if isValidOUI(input) {
+					return nil
+				}
+				return errors.New("invalid input. it's must be valid OUI format")
+			},
+		}
+		r, err := promptSecond.Run()
+		if err != nil {
+			return "", errors.Wrap(err, "prompt failed: ")
+		}
+		return oui(r), nil
+	case "Yes, I choose the address by organization name":
+		// TODO: Split these to another function?
+
+		// Read OUI list from the CSV file
+		// const filename = "./assets/example.csv"
+		const filename = "./assets/oui.csv" //
+		ouisFile, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE, os.ModePerm)
+		if err != nil {
+			return "", errors.Errorf("failed to read the file: %s", filename)
+		}
+		defer ouisFile.Close()
+		ouis := []*OUI{}
+		if err := gocsv.UnmarshalFile(ouisFile, &ouis); err != nil {
+			return "", errors.Errorf("failed to unmarshal the file: %s", filename)
+		}
+
+		// Choose the address from list
+		searcher := func(input string, index int) bool {
+			oui := ouis[index]
+			name := strings.Replace(strings.ToLower(oui.OrganizationName), " ", "", -1)
+			input = strings.Replace(strings.ToLower(input), " ", "", -1)
+			return strings.Contains(name, input)
+		}
+		prompt := promptui.Select{
+			Label: "Select a address",
+			Items: ouis,
+			Templates: &promptui.SelectTemplates{
+				Label:    fmt.Sprintf("%s {{.}}: ", promptui.IconInitial),
+				Active:   fmt.Sprintf("%s {{ .Assignment | underline }}    {{.OrganizationName}}", promptui.IconSelect),
+				Inactive: "  {{.Assignment}}    {{.OrganizationName}}",
+				Selected: fmt.Sprintf(`{{ "%s" | green }} {{ .Assignment | faint }}    {{.OrganizationName}}`, promptui.IconGood),
+			},
+			// Size: 5,
+			Searcher: searcher,
+		}
+
+		idx, _, err := prompt.Run()
+		if err != nil {
+			return "", errors.Wrap(err, "prompt failed: ")
+		}
+		r := ouis[idx].Assignment
+		return oui(r), nil
+	case "No":
 		return "", nil
 	}
-
-	promptSecond := promptui.Prompt{
-		Label: "Enter the OUI to specify",
-		Validate: func(input string) error {
-			if isValidOUI(input) {
-				return nil
-			}
-			return errors.New("invalid input. it's must be valid OUI format")
-		},
-	}
-
-	result, err = promptSecond.Run()
-	if err != nil {
-		return "", errors.Wrap(err, "prompt failed: ")
-	}
-	return oui(result), nil
+	return "", errors.New("something wrong")
 }
 
 func receiveFormatInteractively() (format, error) {
