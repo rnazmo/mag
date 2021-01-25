@@ -21,7 +21,7 @@ func toUpper(s []byte) []byte { return bytes.ToUpper(s) }
 
 func isOnlyInteger(s string) bool {
 	if len(s) == 0 { // SpecialCase
-		return true
+		return false
 	}
 	for _, r := range s {
 		if !unicode.IsNumber(r) { // TODO: Use unicode.IsDigit() instead of IsNumber()?
