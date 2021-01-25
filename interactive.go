@@ -165,13 +165,15 @@ func receiveLettercaseInteractively() (lettercase, error) {
 
 func receiveQuantityInteractively() (int, error) {
 	prompt := promptui.Prompt{
-		Label: "How many do you want to generate? (Recommend: 5)",
+		Label: "How many do you want to generate?",
 		Validate: func(input string) error {
 			if isOnlyInteger(input) {
 				return nil
 			}
 			return errors.New("invalid input. it's must be integer")
 		},
+		Default:   "5",
+		AllowEdit: true,
 	}
 
 	result, err := prompt.Run()
