@@ -1,3 +1,3 @@
 # mag (Mac Address Generator)
 
-Generate random mac address (EUI-48).
+Generate random MAC address (EUI-48).
