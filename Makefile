@@ -8,6 +8,11 @@ mod:
 run:
 	go run .
 
+.PHONY: format
+format:
+	go fmt ./...
+	go vet ./...
+
 .PHONY: test
 test:
 	go test -v ./...
