@@ -1,4 +1,4 @@
-module gitlab.com/rnazmo/mag
+module github.com/rnazmo/mag
 
 go 1.16
 
