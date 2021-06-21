@@ -1,0 +1,10 @@
+default:
+  image: golang:1.16
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - make test
