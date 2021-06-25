@@ -2,7 +2,13 @@
 
 [![Test](https://github.com/rnazmo/mag/actions/workflows/test.yml/badge.svg)](https://github.com/rnazmo/mag/actions/workflows/test.yml)
 
-Generate a random MAC address (EUI-48).
+A CLI tool to generate random MAC addresses.
+
+## Spec
+
+EUI-48 ?
+
+TODO:
 
 ## TODO
 
