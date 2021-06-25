@@ -6,6 +6,7 @@ Generate a random MAC address (EUI-48).
 
 ## TODO
 
+- [ ] Tag `v0.0.1`
 - [ ] Setup lint
   - [ ] Run lint on local
   - [ ] Run lint on CI
@@ -29,3 +30,6 @@ Generate a random MAC address (EUI-48).
     - Wireshark の公開しているリスト
     -  41751 行 (20210130 時点)
     - 情報量が多いがパースが面倒そう
+- [ ] Rename the project?
+  - 'rmag' (Random Mac Address Generator) ?
+  - 'macgen' (random MAC address GENerator) ?
