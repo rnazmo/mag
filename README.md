@@ -20,6 +20,8 @@ TODO:
   - [ ] Run unit-test on local
   - [ ] Run unit-test on CI
 - [ ] Add tests
+- [ ] Improve interactivity
+  - ref: https://clig.dev/#interactivity
 
 - [ ] Add support for specifying the address range
   - Allows you to specify a generated address range.
@@ -37,5 +39,8 @@ TODO:
     -  41751 行 (20210130 時点)
     - 情報量が多いがパースが面倒そう
 - [ ] Rename the project?
+  - ref:
+    - https://clig.dev/#naming
+    - https://smallstep.com/blog/the-poetics-of-cli-command-names/
   - 'rmag' (Random Mac Address Generator) ?
   - 'macgen' (random MAC address GENerator) ?
