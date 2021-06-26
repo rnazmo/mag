@@ -17,12 +17,18 @@ import (
 //   Because any case where the input is not "y", non-nil error will be returned.
 //   ref: https://github.com/manifoldco/promptui/issues/81
 func receiveOUIInteractively() (oui, error) {
+	const (
+		// TODO: Better constant names
+		specified         = "Yes, I have a specific address to specify"
+		specifiedFromList = "Yes, I choose the address by organization name"
+		unspecified       = "No"
+	)
 	prompt := promptui.Select{
 		Label: "Do you want to specify OUI?",
 		Items: []string{
-			"Yes, I have a specific address to specify",
-			"Yes, I choose the address by organization name",
-			"No",
+			specified,
+			specifiedFromList,
+			unspecified,
 		},
 	}
 	_, result, err := prompt.Run()
@@ -31,7 +37,7 @@ func receiveOUIInteractively() (oui, error) {
 	}
 
 	switch result {
-	case "Yes, I have a specific address to specify":
+	case specified:
 		// TODO: Split these to another function?
 		promptSecond := promptui.Prompt{
 			Label: "Enter the OUI to specify",
@@ -47,7 +53,7 @@ func receiveOUIInteractively() (oui, error) {
 			return "", errors.Wrap(err, "prompt failed: ")
 		}
 		return oui(r), nil
-	case "Yes, I choose the address by organization name":
+	case specifiedFromList:
 		// TODO: Split these to another function?
 
 		// Read OUI list from the CSV file
@@ -89,7 +95,7 @@ func receiveOUIInteractively() (oui, error) {
 		}
 		r := ouis[idx].Assignment
 		return oui(r), nil
-	case "No":
+	case unspecified:
 		return "", nil
 	}
 	return "", errors.New("something wrong")
