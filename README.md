@@ -13,13 +13,14 @@ TODO:
 ## TODO
 
 - [ ] Tag `v0.0.1`
-- [ ] Setup lint
+- [ ] Setup lint with golangci-lint
   - [ ] Run lint on local
   - [ ] Run lint on CI
 - [ ] Setup unit-test
   - [ ] Run unit-test on local
   - [ ] Run unit-test on CI
 - [ ] Add tests
+- [ ] Setup release with goreleaser
 - [ ] Improve interactivity
   - ref: https://clig.dev/#interactivity
 
